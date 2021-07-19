@@ -5,32 +5,54 @@ import (
 )
 
 //O(logN)
-func binarySearch(slice []int, subelem int) bool {
+func binarySearch(slice []int, subelem int) int {
 	sliceLen := len(slice)
 
 	if sliceLen == 2 {
-		return subelem == slice[0] || subelem == slice[1]
+		switch subelem {
+		case slice[0]:
+			return 0
+		case slice[1]:
+			return 1
+		default:
+			return -1
+		}
 	} else if sliceLen == 1 {
-		return subelem == slice[0]
+		if subelem == slice[0] {
+			return 0
+		}
+		return -1
 	}
 
 	medIndex := sliceLen/2
 	elem := slice[medIndex]
 
 	 if elem == subelem {
-		return true
+		return medIndex
 	 } else if elem > subelem {
 	 	return binarySearch(slice[:medIndex],subelem)
 	 } else {
-		return binarySearch(slice[medIndex+1:],subelem)
+		return medIndex+1 +binarySearch(slice[medIndex+1:],subelem)
 	 }
 }
 
 
-//O(M*logN)->O(logN) [M<<N]
+//O(M+logN)->O(logN) [M<<N]
 func isInclude(slice, subslice []int) bool {
-	for _,subelem := range subslice {
-		if !binarySearch(slice,subelem) {
+	if len(subslice) == 0 {
+		return true
+	} else if len(subslice) != 0 && len(slice) == 0 {
+		return false
+	}
+
+	firstIndex := binarySearch(slice,subslice[0])
+	if firstIndex == -1 ||
+		(firstIndex + len(subslice) > len(slice)){
+		return false
+	}
+
+	for i:=1;i<len(subslice);i++ {
+		if subslice[i] != slice[firstIndex+i] {
 			return false
 		}
 	}
@@ -44,13 +66,13 @@ func main() {
 	for i:=0;i<len(slice);i++ {
 		slice[i] = i*2
 	}
-	subslice := make([]int,10)
+	var subslice =make([]int,10)
 	for i:=0;i<len(subslice);i++ {
-		if i < len(subslice)/2 {
+		if i < len(subslice)-1 {
 			subslice[i] = slice[i]
 			continue
 		}
-		subslice[i] = slice[len(slice)-i]
+		subslice[i] = slice[len(slice)-1]
 	}
 	fmt.Printf("my isInclude: %v\n",isInclude(slice,subslice))
 }

@@ -13,16 +13,25 @@ func duration(duration int64, realisation string,t *testing.T){
 
 //O(M*N)->O(N) [M<<N]
 func isIncludeNative(slice, subslice []int) bool {
-	res := false
-	for _,subelem := range subslice {
-		res = false
-		for _,elem := range slice {
-			if elem == subelem {
-				res = true
-				break
-			}
+	if len(subslice) == 0 {
+		return true
+	} else if len(subslice) != 0 && len(slice) == 0 {
+		return false
+	}
+
+	subelem := subslice[0]
+	index := -1
+	for i,elem := range slice {
+		if elem == subelem {
+			index = i
 		}
-		if !res {
+	}
+	if index == -1 ||
+		(index + len(subslice) > len(slice)){
+		return false
+	}
+	for i:=1;i<len(subslice);i++ {
+		if subslice[i] != slice[index+i] {
 			return false
 		}
 	}
@@ -30,12 +39,12 @@ func isIncludeNative(slice, subslice []int) bool {
 }
 
 func TestBinarySearchSimple(t *testing.T) {
-	slice := make([]int,100000)
+	slice := make([]int,10)
 	for i:=0;i<len(slice);i++ {
 		slice[i] = i
 	}
-	for _,elem := range slice {
-		if !binarySearch(slice,elem) {
+	for i,elem := range slice {
+		if binarySearch(slice,elem) != i {
 			t.Error("For slice: ", slice,
 				" binarySearch() have not element ", elem)
 		}
@@ -54,7 +63,10 @@ func comparator(slice,subslice []int, t *testing.T) {
 
 func TestSimpleAnswers(t *testing.T){
 	slice := []int{1,2,3,5,7,9,11}
-	subslice := []int{3,5,7}
+	subslice := []int{3,5,11}
+	comparator(slice,subslice,t)
+
+	subslice[2] = 7
 	comparator(slice,subslice,t)
 
 	subslice[0] = 4
