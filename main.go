@@ -7,17 +7,10 @@ import (
 //O(logN)
 func binarySearch(slice []int, subelem int) int {
 	sliceLen := len(slice)
-
-	if sliceLen == 2 {
-		switch subelem {
-		case slice[0]:
-			return 0
-		case slice[1]:
-			return 1
-		default:
-			return -1
-		}
-	} else if sliceLen == 1 {
+	if sliceLen == 0 {
+		return -1
+	}
+	if sliceLen == 1 {
 		if subelem == slice[0] {
 			return 0
 		}
@@ -41,7 +34,8 @@ func binarySearch(slice []int, subelem int) int {
 func isInclude(slice, subslice []int) bool {
 	if len(subslice) == 0 {
 		return true
-	} else if len(subslice) != 0 && len(slice) == 0 {
+	} else if (len(slice) == 0) || (subslice[0] < slice[0]) ||
+	(subslice[len(subslice)-1] > slice[len(slice)-1]) {
 		return false
 	}
 
@@ -62,17 +56,7 @@ func isInclude(slice, subslice []int) bool {
 
 
 func main() {
-	slice := make([]int,1000)
-	for i:=0;i<len(slice);i++ {
-		slice[i] = i*2
-	}
-	var subslice =make([]int,10)
-	for i:=0;i<len(subslice);i++ {
-		if i < len(subslice)-1 {
-			subslice[i] = slice[i]
-			continue
-		}
-		subslice[i] = slice[len(slice)-1]
-	}
+	slice := []int{1,2,3,5,7,9,11}
+	subslice := []int{3,5,7}
 	fmt.Printf("my isInclude: %v\n",isInclude(slice,subslice))
 }
