@@ -82,6 +82,9 @@ func TestSimpleAnswers(t *testing.T){
 
 	subslice = []int{}
 	comparator(slice,subslice,t)
+
+	subslice = append(subslice,4)
+	comparator(slice,subslice,t)
 }
 
 func TestHardAnswers(t *testing.T) {

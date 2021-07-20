@@ -10,12 +10,6 @@ func binarySearch(slice []int, subelem int) int {
 	if sliceLen == 0 {
 		return -1
 	}
-	if sliceLen == 1 {
-		if subelem == slice[0] {
-			return 0
-		}
-		return -1
-	}
 
 	medIndex := sliceLen/2
 	elem := slice[medIndex]
@@ -25,7 +19,11 @@ func binarySearch(slice []int, subelem int) int {
 	 } else if elem > subelem {
 	 	return binarySearch(slice[:medIndex],subelem)
 	 } else {
-		return medIndex+1 +binarySearch(slice[medIndex+1:],subelem)
+		tmpIndex := binarySearch(slice[medIndex+1:],subelem)
+		if tmpIndex!= -1 {
+			return medIndex+1 + tmpIndex
+		}
+		return -1
 	 }
 }
 
