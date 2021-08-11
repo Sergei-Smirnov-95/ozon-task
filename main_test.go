@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
 )
@@ -62,10 +63,7 @@ func comparator(slice,subslice []int, t *testing.T) {
 	resisInclude := isInclude(slice,subslice)
 	resisIncludeNative := isIncludeNative(slice,subslice)
 	if resisInclude != resisIncludeNative {
-		t.Error("For slice: ", slice,
-			"subslice: ", subslice,
-			"expected:", resisIncludeNative,
-			"got:",resisInclude)
+		assert.Equal(t, resisIncludeNative, resisInclude)
 	}
 }
 
